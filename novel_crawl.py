@@ -46,7 +46,11 @@ def parse_url():
     try:
         url_web = 'http://www.qishu.tw/book_13860/'
         url0 = requests.get(url_web,stream = True,headers=header,timeout=50)    
-        url = re.findall(r'<dd><a href=.(.*?).>',url0.text)
+        url = re.findall(r'<dd><a href=.(.*?).>',url0.text) 
+        '''
+	   dot " . " can be used to match any character except \n,
+           becase in the web sources,there are "" and '' after href,so can't only match""
+        '''
 
         return url
     except:
@@ -107,14 +111,14 @@ def download(start,num,url_end):
             time.sleep(random.randint(1,5)) 
 
         except:
-            download(c,num,url_end) #In testing, fail to parse title too many times,so repeat download
+            download(c,num,url_end) #In testing, fail to download too many times, so repeat download
 
 def main():
 
     url_end = parse_url()
-    num = len(url_end)
+    num = len(url_end)     #The num of all the novels
     print("The novels num is: %d \r\n"%num)
-    download(3500,num,url_end)
+    download(0,num,url_end)
     
 
 if __name__ == '__main__':
